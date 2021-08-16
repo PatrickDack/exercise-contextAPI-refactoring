@@ -2,15 +2,17 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 import carBlue from './images/carBlue.jpeg';
 import carRed from './images/carRed.jpeg';
 import carYellow from './images/carYellow.jpeg';
-import { moveCar } from './redux/actionCreators';
+import MyContext from './MyContext';
 
-function Cars({ redCar, blueCar, yellowCar, moveCar }) {
-  return (
-    <div>
+class Cars extends React.Component {
+  render() {
+    const { red: redCar, blue: blueCar, yellow: yellowCar } = this.context.cars;
+    const { moveCar } = this.context;
+    return (
+      <div>
       <div>
         <img
           className={redCar ? 'car-right' : 'car-left'}
@@ -51,8 +53,11 @@ function Cars({ redCar, blueCar, yellowCar, moveCar }) {
         </button>
       </div>
     </div>
-  );
+    );
+  }
 }
+
+Cars.contextType = MyContext;
 
 Cars.propTypes = {
   moveCar: PropTypes.func.isRequired,
@@ -61,11 +66,4 @@ Cars.propTypes = {
   yellowCar: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  redCar: state.cars.red,
-  blueCar: state.cars.blue,
-  yellowCar: state.cars.yellow});
-
-const mapDispatchToProps = { moveCar };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cars);
+export default Cars;
